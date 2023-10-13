@@ -103,13 +103,12 @@ const generateGalaxy = () =>
             uSize: { value: 4 * renderer.getPixelRatio() }
         }
     })
-    gui.add(material.uniforms.uSize, 'value').min(1).max(10).step(0.01).name('size')
-
+    
     /**
      * Points
-     */
-    points = new THREE.Points(geometry, material)
-    scene.add(points)
+    */
+   points = new THREE.Points(geometry, material)
+   scene.add(points)
 }
 
 gui.add(parameters, 'count').min(100).max(1000000).step(100).onFinishChange(generateGalaxy)
