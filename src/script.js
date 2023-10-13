@@ -24,12 +24,10 @@ const scene = new THREE.Scene()
  */
 const parameters = {}
 parameters.count = 200000
-parameters.size = 0.005
 parameters.radius = 5
 parameters.branches = 3
-parameters.spin = 1
-parameters.randomness = 0.5
-parameters.randomnessPower = 3
+parameters.randomness = 0.4
+parameters.randomnessPower = 4
 parameters.insideColor = '#ff6030'
 parameters.outsideColor = '#1b3984'
 
@@ -38,7 +36,9 @@ let material = null
 let points = null
 
 const generateGalaxy = () =>
-{
+{   
+    clock.start(0) // reset galaxy animation
+
     if(points !== null)
     {
         geometry.dispose()
@@ -84,7 +84,7 @@ const generateGalaxy = () =>
 
         // Color
         const mixedColor = insideColor.clone()
-        mixedColor.lerp(outsideColor, radius / parameters.radius)
+        mixedColor.lerp(outsideColor, 1.5*(radius / parameters.radius))
 
         colors[i3    ] = mixedColor.r
         colors[i3 + 1] = mixedColor.g
@@ -124,7 +124,7 @@ gui.add(parameters, 'count').min(100).max(1000000).step(100).onFinishChange(gene
 gui.add(parameters, 'radius').min(0.01).max(20).step(0.01).onFinishChange(generateGalaxy)
 gui.add(parameters, 'branches').min(2).max(20).step(1).onFinishChange(generateGalaxy)
 gui.add(parameters, 'randomness').min(0).max(2).step(0.001).onFinishChange(generateGalaxy)
-gui.add(parameters, 'randomnessPower').min(1).max(10).step(0.001).onFinishChange(generateGalaxy)
+gui.add(parameters, 'randomnessPower').min(1).max(10).step(0.001).name('conformityToBaselineRatio').onFinishChange(generateGalaxy)
 gui.addColor(parameters, 'insideColor').onFinishChange(generateGalaxy)
 gui.addColor(parameters, 'outsideColor').onFinishChange(generateGalaxy)
 
