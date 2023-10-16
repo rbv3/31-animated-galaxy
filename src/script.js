@@ -24,13 +24,14 @@ const scene = new THREE.Scene()
  * Galaxy
  */
 const parameters = {}
-parameters.count = 200000
+parameters.count = 500000
 parameters.radius = 5
 parameters.branches = 3
 parameters.randomness = 0.4
 parameters.randomnessPower = 4
-parameters.insideColor = '#ff6030'
-parameters.outsideColor = '#1b3984'
+parameters.speed = 1
+parameters.insideColor = '#fb5523'
+parameters.outsideColor = '#e9d8fd'
 
 let geometry = null
 let material = null
@@ -110,7 +111,8 @@ const generateGalaxy = () =>
         fragmentShader: galaxyFragmentShader,
         uniforms: {
             uTime: { value: 0 },
-            uSize: { value: 8 * renderer.getPixelRatio() }
+            uSize: { value: 8 * renderer.getPixelRatio() },
+            uSpeed: { value: parameters.speed }
         }
     })
     
@@ -122,10 +124,13 @@ const generateGalaxy = () =>
 }
 
 gui.add(parameters, 'count').min(100).max(1000000).step(100).onFinishChange(generateGalaxy)
-gui.add(parameters, 'radius').min(0.01).max(20).step(0.01).onFinishChange(generateGalaxy)
+gui.add(parameters, 'radius').min(1).max(20).step(0.01).onFinishChange(generateGalaxy)
 gui.add(parameters, 'branches').min(2).max(20).step(1).onFinishChange(generateGalaxy)
 gui.add(parameters, 'randomness').min(0).max(2).step(0.001).onFinishChange(generateGalaxy)
-gui.add(parameters, 'randomnessPower').min(1).max(10).step(0.001).name('conformityToBaselineRatio').onFinishChange(generateGalaxy)
+gui.add(parameters, 'randomnessPower').min(1).max(10).step(0.001).name('conformityToBaseline').onFinishChange(generateGalaxy)
+gui.add(parameters, 'speed').min(0.5).max(5).step(0.1).name('speed').onChange((updatedSpeed) => {
+    material.uniforms.uSpeed.value = updatedSpeed
+})
 gui.addColor(parameters, 'insideColor').onFinishChange(generateGalaxy)
 gui.addColor(parameters, 'outsideColor').onFinishChange(generateGalaxy)
 

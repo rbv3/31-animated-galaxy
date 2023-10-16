@@ -1,5 +1,6 @@
 uniform float uSize;
 uniform float uTime;
+uniform float uSpeed;
 
 attribute float aScale;
 attribute vec3 aRandomness;
@@ -14,7 +15,7 @@ void main() {
     float angle = atan(modelPosition.x, modelPosition.z);
     float distanceFromCenter = length(modelPosition.xz);
     float angleOffset = (1.0 / distanceFromCenter) * uTime * 0.3;
-    angle += angleOffset;
+    angle += angleOffset * uSpeed;
     modelPosition.x = cos(angle) * distanceFromCenter;
     modelPosition.z = sin(angle) * distanceFromCenter;
 
